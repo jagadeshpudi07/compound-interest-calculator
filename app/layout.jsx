@@ -1,6 +1,8 @@
 import React from "react"
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { ThemeProvider } from "@/components/theme-provider"
+import { ModeToggle } from "@/components/mode-toggle"
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -18,9 +20,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${_geist.variable} ${_geistMono.variable}`}>
-      <body className="font-sans antialiased">
-        {children}
+    <html lang="en" className={`${_geist.variable} ${_geistMono.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased text-foreground bg-background">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          {children}
+          <ModeToggle />
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
